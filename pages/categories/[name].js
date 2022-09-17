@@ -12,8 +12,9 @@ import {
   getAllFavorites,
   saveFavorites,
   isSavedInFavorites,
+  removeFromFavorites,
 } from '../../lib/favorites';
-import { AiOutlineHeart } from 'react-icons/ai';
+import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 
 export async function getStaticProps({ params }) {
   const filteredCourses = await getCoursesByCategory(params.name);
@@ -85,39 +86,43 @@ export default function Category({ filteredCourses, category }) {
         </h1>
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-1 md:gap-y-8 pb-14'>
           {data.length &&
-            data.map((course) => (
-              <Card
-                to={`/courses/${course.slug}`}
-                title={course.title}
-                image={course.banner}
-                key={course.title}
-              >
-                <div className='flex space-x-2'>
-                  {course.category &&
-                    course.category.map((category) => (
-                      <div>
-                        <span
-                          className={`text-xs inline-block py-1 px-2.5 leading-none text-center whitespace-nowrap align-baseline font-bold ${colors[category].color} text-white rounded`}
-                          key={category}
-                        >
-                          {colors[category].name}{' '}
-                        </span>
-                      </div>
-                    ))}
-                </div>
-                <button
-                  onClick={() => handleFavorites(course.slug)}
-                  className='bg-red-100'
+            data.map((course) => {
+              const age = course.age.join(' - ');
+
+              return (
+                <Card
+                  to={`/courses/${course.slug}`}
+                  title={course.title}
+                  image={course.banner}
+                  key={course.title}
                 >
-                  {favorites.includes(course.slug)
-                    ? 'Guardarn´t en favoritos'
-                    : 'Guardar en favoritos'}
-                </button>
-                <div className='absolute top-0 right-0 mr-5 mt-4 text-white p-1 bg-red-400 rounded-lg z-10'>
-                  <AiOutlineHeart size={25} />
-                </div>
-              </Card>
-            ))}
+                  <p>{age} años</p>
+                  <div className='flex space-x-2'>
+                    {course.category &&
+                      course.category.map((category) => (
+                        <div>
+                          <span
+                            className={`text-xs inline-block py-1 px-2.5 leading-none text-center whitespace-nowrap align-baseline font-bold ${colors[category].color} text-white rounded`}
+                            key={category}
+                          >
+                            {colors[category].name}{' '}
+                          </span>
+                        </div>
+                      ))}
+                  </div>
+                  <button
+                    className='absolute top-0 right-0 mr-5 mt-4 text-white p-1 bg-red-400 rounded-lg z-10'
+                    onClick={() => handleFavorites(course.slug)}
+                  >
+                    {favorites.includes(course.slug) ? (
+                      <AiFillHeart size={25} />
+                    ) : (
+                      <AiOutlineHeart size={25} />
+                    )}
+                  </button>
+                </Card>
+              );
+            })}
         </div>
       </article>
     </Layout>
