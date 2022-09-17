@@ -71,7 +71,7 @@ export default function Category({ filteredCourses, category }) {
   return (
     <Layout>
       <Head>
-        <title>Cursos de {category}</title>
+        <title>Cursos de {colors[category].name}</title>
       </Head>
       <article>
         <h1 className='text-gray-700 text-2xl font-bold'>

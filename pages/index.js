@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
+import Head from 'next/head';
+
 import { addToFavorites, removeFavorites } from '../redux/states/favoritesSlice';
 import { isSavedInFavorites } from '../lib/favorites';
 
@@ -80,12 +82,16 @@ export default function Home({ allCategoriesData, someCourses }) {
 
   return (
     <Layout home>
+      <Head>
+        <title>Aprende a pensar</title>
+      </Head>
+  
       <div className='bg-gray-200 mx-auto p-5'>
         <div className='mx-auto'>
           <div className='mb-12'>
             <h1 className='text-gray-800 text-4xl font-bold'>Categorías</h1>
             <div className='relative flex items-center'>
-              <div className='hidden md:inline-block cursor-pointer opacity-50 hover:opacity-100'>
+              <div className='hidden md:inline-block cursor-pointer opacity-50 hover:opacity-100 xl:hidden'>
                 <MdChevronLeft
                   onClick={() => slideLeft('categories')}
                   size={80}
@@ -109,7 +115,7 @@ export default function Home({ allCategoriesData, someCourses }) {
                     </Card>
                   ))}
               </div>
-              <div className='hidden md:inline-block cursor-pointer opacity-50 hover:opacity-100'>
+              <div className='hidden md:inline-block cursor-pointer opacity-50 hover:opacity-100 xl:hidden'>
                 <MdChevronRight
                   onClick={() => slideRight('categories')}
                   size={80}

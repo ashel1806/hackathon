@@ -40,6 +40,8 @@ export default function Favorites({ allCoursesData }) {
       : dispatch(addToFavorites(course));
   };
 
+  console.log('favoritos ', savedFavorites);
+
   const colors = {
     diseno: {
       name: 'Diseño',
@@ -97,7 +99,7 @@ export default function Favorites({ allCoursesData }) {
                     className='absolute top-0 right-0 mr-5 mt-4 text-white p-1 bg-red-400 rounded-lg z-10'
                     onClick={() => handleFavorites(course.slug)}
                   >
-                    {savedFavorites && savedFavorites.includes(course.slug) ? (
+                    {favorites.length && favorites.includes(course.slug) ? (
                       <AiFillHeart size={25} />
                     ) : (
                       <AiOutlineHeart size={25} />
