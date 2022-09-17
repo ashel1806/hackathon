@@ -3,50 +3,41 @@ import Head from 'next/head';
 import { useDispatch, useSelector } from 'react-redux';
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 
-import Layout from '../../components/layout';
-import Card from '../../components/Card/Card';
-import { addToFavorites, removeFavorites } from '../../redux/states/favoritesSlice';
-
+import { isSavedInFavorites } from '../lib/favorites';
 import {
-  getAllCategoriesNames,
-  getCoursesByCategory,
-} from '../../lib/categories';
-import { isSavedInFavorites } from '../../lib/favorites';
+  addToFavorites,
+  removeFavorites,
+} from '../redux/states/favoritesSlice';
 
-export async function getStaticProps({ params }) {
-  const filteredCourses = await getCoursesByCategory(params.name);
+import Layout from '../components/layout';
+import Card from '../components/Card/Card';
+import { getAllCoursesData } from '../lib/courses';
+
+export async function getStaticProps() {
+  const allCoursesData = getAllCoursesData();
   return {
     props: {
-      filteredCourses,
-      category: params.name,
+      allCoursesData,
     },
   };
 }
 
-export async function getStaticPaths() {
-  const paths = getAllCategoriesNames();
-  return {
-    paths,
-    fallback: false,
-  };
-}
-
-export default function Category({ filteredCourses, category }) {
+export default function Favorites({ allCoursesData }) {
   const [savedFavorites, setSavedFavorites] = useState([]);
-  const { totalCourses, data } = filteredCourses;
   const dispatch = useDispatch();
-  const favorites = useSelector(state => state.favorites);
+  const favorites = useSelector((state) => state.favorites);
 
   useEffect(() => {
     if (favorites) {
-      setSavedFavorites(favorites);
+      const joinedFavorites = allCoursesData.filter((course) => favorites.includes(course.slug))
+      setSavedFavorites(joinedFavorites);
     }
   }, [favorites]);
 
   const handleFavorites = (course) => {
     isSavedInFavorites(course)
       ? dispatch(removeFavorites(course))
-      : dispatch(addToFavorites(course))
+      : dispatch(addToFavorites(course));
   };
 
   const colors = {
@@ -71,15 +62,15 @@ export default function Category({ filteredCourses, category }) {
   return (
     <Layout>
       <Head>
-        <title>Cursos de {category}</title>
+        <title>Mis Favoritos</title>
       </Head>
       <article>
         <h1 className='text-gray-700 text-2xl font-bold'>
-          Existen {totalCourses} cursos con esta categoría
+          {savedFavorites.length ? 'Mis favoritos' : 'Aún no has agregados favoritos'}
         </h1>
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-1 md:gap-y-8 pb-14'>
-          {data.length &&
-            data.map((course) => {
+          {savedFavorites.length &&
+            savedFavorites.map((course) => {
               const age = course.age.join(' - ');
 
               return (
