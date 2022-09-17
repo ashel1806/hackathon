@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+#CardScroll1::-webkit-scrollbar,#CardScroll2::-webkit-scrollbar{
+    height: 0.8rem;
+}
+
+#CardScroll1::-webkit-scrollbar-track,#CardScroll2::-webkit-scrollbar-track{
+    border-radius: 10px;
+    background: #bdbdbd;
+    
+}
+
+#CardScroll1::-webkit-scrollbar-thumb,#CardScroll2::-webkit-scrollbar-thumb{
+    border-radius: 10px;
+    background: #0177FB
+}
