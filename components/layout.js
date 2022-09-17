@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import NavBar from './NavBar/NavBar';
+import {AiOutlineHome, AiFillHome} from 'react-icons/ai'
 
 const name = 'Ashel Vasquez';
 export const siteTitle = 'Página de la hackathon';
@@ -30,10 +31,13 @@ export default function Layout({
       <main className='bg-gray-200 h-auto'>
         <div className='max-w-[1440px] mx-auto'>
           {!home && (
-            <div className='pt-10 pb-8'>
-              <Link href="/">
-                  
-                <a className='p-3 bg-gray-400 rounded-lg'> Menú principal</a>
+            <div className='flex pt-10 pb-8'>
+              <Link href="/">              
+                <a className='flex p-3 bg-gray-900 opacity-60 hover:opacity-80 rounded-lg text-slate-50'>
+                  <div className='inline-text'>
+                    <AiOutlineHome className='bg-gray-900' size={30} />
+                  </div>
+                </a>
               </Link>
             </div>
           )}

@@ -8,6 +8,7 @@ import {
   getAllCategoriesNames,
   getCoursesByCategory,
 } from '../../lib/categories';
+import { getAllFavorites } from '../../lib/favorites';
 
 export async function getStaticProps({ params }) {
   const filteredCourses = await getCoursesByCategory(params.name);
@@ -29,6 +30,8 @@ export async function getStaticPaths() {
 
 export default function Category({ filteredCourses, category }) {
   const { totalCourses, data } = filteredCourses;
+  const favorites = getAllFavorites();
+  console.log(favorites);
 
   return (
     <Layout>

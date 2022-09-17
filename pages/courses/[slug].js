@@ -29,8 +29,10 @@ export default function Course({ courseData }) {
       </Head>
       <article>
         <h1>{courseData.title}</h1>
-        <div 
-        dangerouslySetInnerHTML={{ __html: courseData.contentHtml }} />
+        <div
+          className='prose prose-lg xl:prose-xl mx-auto prose max-w-none'
+          dangerouslySetInnerHTML={{ __html: courseData.contentHtml }}
+        />
       </article>
     </Layout>
   );
