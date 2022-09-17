@@ -1,8 +1,14 @@
+import { useEffect, useState } from 'react';
+import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
+import { useDispatch, useSelector } from 'react-redux';
+import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
+import { addToFavorites, removeFavorites } from '../redux/states/favoritesSlice';
+import { isSavedInFavorites } from '../lib/favorites';
+
 import Layout from '../components/layout';
 import { getSomeCoursesData } from '../lib/courses';
 import { getAllCategoriesData } from '../lib/categories';
 import Card from '../components/Card/Card';
-import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
 
 export async function getStaticProps() {
   const allCategoriesData = getAllCategoriesData();
@@ -16,6 +22,22 @@ export async function getStaticProps() {
 }
 
 export default function Home({ allCategoriesData, someCourses }) {
+  const [savedFavorites, setSavedFavorites] = useState([]);
+  const dispatch = useDispatch();
+  const favorites = useSelector(state => state.favorites);
+
+  useEffect(() => {
+    if (favorites) {
+      setSavedFavorites(favorites);
+    }
+  }, [favorites]);
+
+  const handleFavorites = (course) => {
+    isSavedInFavorites(course)
+      ? dispatch(removeFavorites(course))
+      : dispatch(addToFavorites(course))
+  };
+
   const slideLeft = (context) => {
     var slider1 = document.getElementById('CardScroll1');
     var slider2 = document.getElementById('CardScroll2');
@@ -127,6 +149,16 @@ export default function Home({ allCategoriesData, someCourses }) {
                             </span>
                           ))}
                         </div>
+                        <button
+                    className='absolute top-0 right-0 mr-5 mt-4 text-white p-1 bg-red-400 rounded-lg z-10'
+                    onClick={() => handleFavorites(course.slug)}
+                  >
+                    {savedFavorites && savedFavorites.includes(course.slug) ? (
+                      <AiFillHeart size={25} />
+                    ) : (
+                      <AiOutlineHeart size={25} />
+                    )}
+                  </button>
                       </Card>
                     );
                   })}

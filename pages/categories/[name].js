@@ -1,20 +1,17 @@
 import { useEffect, useState } from 'react';
 import Head from 'next/head';
+import { useDispatch, useSelector } from 'react-redux';
+import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 
 import Layout from '../../components/layout';
 import Card from '../../components/Card/Card';
+import { addToFavorites, removeFavorites } from '../../redux/states/favoritesSlice';
 
 import {
   getAllCategoriesNames,
   getCoursesByCategory,
 } from '../../lib/categories';
-import {
-  getAllFavorites,
-  saveFavorites,
-  isSavedInFavorites,
-  removeFromFavorites,
-} from '../../lib/favorites';
-import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
+import { isSavedInFavorites } from '../../lib/favorites';
 
 export async function getStaticProps({ params }) {
   const filteredCourses = await getCoursesByCategory(params.name);
@@ -35,25 +32,21 @@ export async function getStaticPaths() {
 }
 
 export default function Category({ filteredCourses, category }) {
-  const [favorites, setFavorites] = useState([]);
+  const [savedFavorites, setSavedFavorites] = useState([]);
   const { totalCourses, data } = filteredCourses;
+  const dispatch = useDispatch();
+  const favorites = useSelector(state => state.favorites);
 
   useEffect(() => {
-    const getFavorites = getAllFavorites();
-
-    if (getFavorites) {
-      setFavorites(getFavorites);
+    if (favorites) {
+      setSavedFavorites(favorites);
     }
-
-    console.log(favorites);
-  }, []);
+  }, [favorites]);
 
   const handleFavorites = (course) => {
-    if (isSavedInFavorites(course)) {
-      removeFromFavorites(course);
-    } else {
-      saveFavorites(course);
-    }
+    isSavedInFavorites(course)
+      ? dispatch(removeFavorites(course))
+      : dispatch(addToFavorites(course))
   };
 
   const colors = {
@@ -100,10 +93,9 @@ export default function Category({ filteredCourses, category }) {
                   <div className='flex space-x-2'>
                     {course.category &&
                       course.category.map((category) => (
-                        <div>
+                        <div key={category}>
                           <span
                             className={`text-xs inline-block py-1 px-2.5 leading-none text-center whitespace-nowrap align-baseline font-bold ${colors[category].color} text-white rounded`}
-                            key={category}
                           >
                             {colors[category].name}{' '}
                           </span>
@@ -114,7 +106,7 @@ export default function Category({ filteredCourses, category }) {
                     className='absolute top-0 right-0 mr-5 mt-4 text-white p-1 bg-red-400 rounded-lg z-10'
                     onClick={() => handleFavorites(course.slug)}
                   >
-                    {favorites.includes(course.slug) ? (
+                    {savedFavorites && savedFavorites.includes(course.slug) ? (
                       <AiFillHeart size={25} />
                     ) : (
                       <AiOutlineHeart size={25} />
