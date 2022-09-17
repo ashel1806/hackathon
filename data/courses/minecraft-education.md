@@ -25,15 +25,15 @@ age: [8, 15]
   </details>
 
 <details>
-<summary>Actividad 2: Presentación de Crack The Code</summary>
+<summary>Actividad 2: Presentación de Aprendí a pensar</summary>
 
 - **Objetivo:** dar la bienvenida a todos los nuevos estudiantes y presentar la variedad de talleres que tenemos
 
 - **Tiempo:** 2 minutos aproximadamente
 
-- **Descripción:** 1. Preguntar a los estudiantes si han llevado talleres en CTC. En caso tengan respuestas afirmativas, preguntarles qué talleres llevaron. 2. Ingresar a la [pág. de CTC para](https://www.crackthecode.la/cursos) mostrar nuestros talleres mencionando lo siguiente:
+- **Descripción:** 1. Preguntar a los estudiantes si han llevado talleres en CTC. En caso tengan respuestas afirmativas, preguntarles qué talleres llevaron. 2. Ingresar a la [pág. de Aprendí a Pensar para](https://hackathon-beta.vercel.app/) mostrar nuestros talleres mencionando lo siguiente:
 
-          “Quiero darles la bienvenida a Crack The Code. Somos una academia que enseña programación, robótica y creatividad. Por ejemplo, si quieren aprender más sobre diseño y creación pueden llevar los talleres de (mencionar los talleres según ruta), si quieren aprender sobre robótica pueden llevar nuestro taller donde armamos a 6 robots y si quieres sacar aprender a fondo la programación pueden llevar nuestros talleres de Minecraft, Minecraft con JavaScript y Pensamiento Computacional”.
+          “Quiero darles la bienvenida a Aprendí a Pensar. Somos una academia que enseña programación, robótica y creatividad. Por ejemplo, si quieren aprender más sobre diseño y creación pueden llevar los talleres de (mencionar los talleres según ruta), si quieren aprender sobre robótica pueden llevar nuestro taller donde armamos a 6 robots y si quieres sacar aprender a fondo la programación pueden llevar nuestros talleres de Minecraft, Minecraft con JavaScript y Pensamiento Computacional”.
 
   </details>
 
