@@ -117,7 +117,7 @@ export default function Home({ allCategoriesData, someCourses }) {
                         key={course.title}
                       >
                         <p>{age} años</p>
-                        <div class='space-x-2 '>
+                        <div className='space-x-2 '>
                           {course.category.map((category) => (
                             <span
                               key={category}

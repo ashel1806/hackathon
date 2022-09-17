@@ -8,7 +8,11 @@ import {
   getAllCategoriesNames,
   getCoursesByCategory,
 } from '../../lib/categories';
-import { getAllFavorites, saveFavorites } from '../../lib/favorites';
+import {
+  getAllFavorites,
+  saveFavorites,
+  isSavedInFavorites,
+} from '../../lib/favorites';
 import { AiOutlineHeart } from 'react-icons/ai';
 
 export async function getStaticProps({ params }) {
@@ -44,7 +48,30 @@ export default function Category({ filteredCourses, category }) {
   }, []);
 
   const handleFavorites = (course) => {
-    saveFavorites(course);
+    if (isSavedInFavorites(course)) {
+      removeFromFavorites(course);
+    } else {
+      saveFavorites(course);
+    }
+  };
+
+  const colors = {
+    diseno: {
+      name: 'Diseño',
+      color: 'bg-blue-600',
+    },
+    programacion: {
+      name: 'Programación',
+      color: 'bg-red-600',
+    },
+    videojuegos: {
+      name: 'Videojuegos',
+      color: 'bg-purple-600',
+    },
+    audiovisual: {
+      name: 'Audiovisual',
+      color: 'bg-green-500',
+    },
   };
 
   return (
@@ -65,15 +92,19 @@ export default function Category({ filteredCourses, category }) {
                 image={course.banner}
                 key={course.title}
               >
-                {course.category &&
-                  course.category.map((category) => (
-                    <span
-                      className={`text-xs inline-block py-1 px-2.5 leading-none text-center whitespace-nowrap align-baseline font-bold bg-orange-300 text-white rounded`}
-                      key={category}
-                    >
-                      {category}{' '}
-                    </span>
-                  ))}
+                <div className='flex space-x-2'>
+                  {course.category &&
+                    course.category.map((category) => (
+                      <div>
+                        <span
+                          className={`text-xs inline-block py-1 px-2.5 leading-none text-center whitespace-nowrap align-baseline font-bold ${colors[category].color} text-white rounded`}
+                          key={category}
+                        >
+                          {colors[category].name}{' '}
+                        </span>
+                      </div>
+                    ))}
+                </div>
                 <button
                   onClick={() => handleFavorites(course.slug)}
                   className='bg-red-100'
