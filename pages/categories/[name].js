@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import Head from 'next/head';
 
 import Layout from '../../components/layout';
@@ -8,7 +8,8 @@ import {
   getAllCategoriesNames,
   getCoursesByCategory,
 } from '../../lib/categories';
-import { getAllFavorites } from '../../lib/favorites';
+import { getAllFavorites, saveFavorites } from '../../lib/favorites';
+import { AiOutlineHeart } from 'react-icons/ai';
 
 export async function getStaticProps({ params }) {
   const filteredCourses = await getCoursesByCategory(params.name);
@@ -29,9 +30,22 @@ export async function getStaticPaths() {
 }
 
 export default function Category({ filteredCourses, category }) {
+  const [favorites, setFavorites] = useState([]);
   const { totalCourses, data } = filteredCourses;
-  const favorites = getAllFavorites();
-  console.log(favorites);
+
+  useEffect(() => {
+    const getFavorites = getAllFavorites();
+
+    if (getFavorites) {
+      setFavorites(getFavorites);
+    }
+
+    console.log(favorites);
+  }, []);
+
+  const handleFavorites = (course) => {
+    saveFavorites(course);
+  };
 
   return (
     <Layout>
@@ -42,25 +56,38 @@ export default function Category({ filteredCourses, category }) {
         <h1 className='text-gray-700 text-2xl font-bold'>
           Existen {totalCourses} cursos con esta categoría
         </h1>
-          <div
-            id='CardScroll'
-            className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-1 md:gap-y-8'
-          >
-            {data.length &&
-              data.map((course) => (
-                <Card
-                  to={`/courses/${course.slug}`}
-                  title={course.title}
-                  image={course.banner}
-                  key={course.title}
+        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-1 md:gap-y-8 pb-14'>
+          {data.length &&
+            data.map((course) => (
+              <Card
+                to={`/courses/${course.slug}`}
+                title={course.title}
+                image={course.banner}
+                key={course.title}
+              >
+                {course.category &&
+                  course.category.map((category) => (
+                    <span
+                      className={`text-xs inline-block py-1 px-2.5 leading-none text-center whitespace-nowrap align-baseline font-bold bg-orange-300 text-white rounded`}
+                      key={category}
+                    >
+                      {category}{' '}
+                    </span>
+                  ))}
+                <button
+                  onClick={() => handleFavorites(course.slug)}
+                  className='bg-red-100'
                 >
-                  {course.category &&
-                    course.category.map((category) => (
-                      <span key={category}>{category} - </span>
-                    ))}
-                </Card>
-              ))}
-          </div>         
+                  {favorites.includes(course.slug)
+                    ? 'Guardarn´t en favoritos'
+                    : 'Guardar en favoritos'}
+                </button>
+                <div className='absolute top-0 right-0 mr-5 mt-4 text-white p-1 bg-red-400 rounded-lg z-10'>
+                  <AiOutlineHeart size={25} />
+                </div>
+              </Card>
+            ))}
+        </div>
       </article>
     </Layout>
   );
